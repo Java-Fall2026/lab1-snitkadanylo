@@ -3,20 +3,34 @@ plugins {
     id 'application'
 }
 
-java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(21)
-    }
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation platform('org.junit:junit-bom:5.10.0')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+}
+
+test {
+    useJUnitPlatform()
 }
 
 application {
-    mainClass = 'ua.Main' // <-- your main class, e.g. 'ua.hotel.Main'
+    // Вказуємо головний клас твоєї програми
+    mainClass = 'ua.delivery.Main'
 }
 
-tasks.withType(JavaCompile).configureEach {
+// Примусове використання UTF-8 під час компіляції
+tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
 }
 
-tasks.withType(JavaExec).configureEach {
-    defaultCharacterEncoding = 'UTF-8'
+// Примусове використання UTF-8 під час виконання програми в консолі
+tasks.withType(JavaExec) {
+    jvmArgs += [
+        "-Dfile.encoding=UTF-8",
+        "-Dsun.stdout.encoding=UTF-8",
+        "-Dsun.stderr.encoding=UTF-8"
+    ]
 }
