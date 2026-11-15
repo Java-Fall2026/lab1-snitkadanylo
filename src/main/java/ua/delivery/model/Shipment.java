@@ -10,21 +10,20 @@ public class Shipment extends BaseEntity {
 
     private final String trackingNumber;
     private final Client sender;
-    private final String cargoType;
+    private final CargoType cargoType;
     private final double cargoWeightKg;
     private final LocalDate creationDate;
-    private String status;
+    private ShipmentStatus status;
 
-    public Shipment(String trackingNumber, Client sender, String cargoType,
-                    double cargoWeightKg, LocalDate creationDate, String status) {
+    public Shipment(String trackingNumber, Client sender, CargoType cargoType,
+                    double cargoWeightKg, LocalDate creationDate, ShipmentStatus status) {
         super();
         this.trackingNumber = DeliveryUtils.cleanText(trackingNumber, "trackingNumber");
         DeliveryUtils.validateNotNull(sender, "sender");
         this.sender = sender;
 
-        String normalizedCargo = DeliveryUtils.cleanUpper(cargoType, "cargoType");
-        DeliveryUtils.validateCargoType(normalizedCargo);
-        this.cargoType = normalizedCargo;
+        DeliveryUtils.validateNotNull(cargoType, "cargoType");
+        this.cargoType = cargoType;
 
         DeliveryUtils.validatePositive(cargoWeightKg, "cargoWeightKg");
         this.cargoWeightKg = cargoWeightKg;
@@ -35,10 +34,9 @@ public class Shipment extends BaseEntity {
         setStatus(status);
     }
 
-    public final void setStatus(String status) {
-        String normalizedStatus = DeliveryUtils.cleanUpper(status, "status");
-        DeliveryUtils.validateShipmentStatus(normalizedStatus);
-        this.status = normalizedStatus;
+    public final void setStatus(ShipmentStatus status) {
+        DeliveryUtils.validateNotNull(status, "status");
+        this.status = status;
     }
 
     public String getTrackingNumber() {
@@ -49,7 +47,7 @@ public class Shipment extends BaseEntity {
         return sender;
     }
 
-    public String getCargoType() {
+    public CargoType getCargoType() {
         return cargoType;
     }
 
@@ -61,7 +59,7 @@ public class Shipment extends BaseEntity {
         return creationDate;
     }
 
-    public String getStatus() {
+    public ShipmentStatus getStatus() {
         return status;
     }
 
@@ -83,10 +81,10 @@ public class Shipment extends BaseEntity {
         return "Shipment{" +
                 "trackingNumber='" + trackingNumber + '\'' +
                 ", sender=" + sender +
-                ", cargoType='" + cargoType + '\'' +
+                ", cargoType=" + cargoType +
                 ", cargoWeightKg=" + cargoWeightKg +
                 ", creationDate=" + creationDate +
-                ", status='" + status + '\'' +
+                ", status=" + status +
                 ", createdAt=" + createdAt +
                 '}';
     }
